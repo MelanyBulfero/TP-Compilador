@@ -247,7 +247,7 @@ salida ::=	Print Const_String:cs 		{: System.out.println("[Regla 28] Factor Expr
 											s = s + "[Regla 28] Factor Expresion\n";
 											listaSimbolos.add(cs.toString());
 											listaSimbolosNombre.add("Const_String");
-											RESULT = new NodoSalida( NodoCteString( cs ) ); :};
+											RESULT = new NodoSalida( new NodoCteString( cs ) ); :};
 
 condicionlogica ::=	ParA condicion:condicion ParC
 										{: System.out.println("[Regla 29] (Condicion)");
