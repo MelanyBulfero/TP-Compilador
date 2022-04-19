@@ -1,5 +1,6 @@
 package main;
 
+import main.ast.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -106,144 +107,234 @@ action code
 
 terminal While, If, Else, Print, DeclareB, DeclareE, ProgramB, ProgramE, Avg, PInt, PFloat, PString, VarId, And, Or, Mayor, MayorI, Menor, MenorI, Distinto, Igual, Suma, Resta, Multiplicacion, Division, ParA, ParC, LlaveA, LlaveC, CorcheteA, CorcheteC, Coma, Asignacion, Numero, Real, Const_String;
 
-non terminal pgm, listadesentencias, lineadesentencia, tipo, cond, while, if, asignacion, expresion, termino, factor, salida, condicionlogica, condicion, op_comp, declaracion, listadedeclaraciones, lineadedeclaracion, programa, avg, lista;
+non terminal
+
+declaracion, listadedeclaraciones, lineadedeclaracion, tipo;
+
+non terminal NodoPrograma pgm;
+non terminal List<NodoSentencia> listadesentencias, programa;
+non terminal NodoSentencia lineadesentencia;
+non terminal NodoExpresion expresion, termino, factor;
+non terminal NodoAsignacion asignacion;
+non terminal NodoSalida salida;
+non terminal NodoWhile while;
+non terminal NodoCondicion cond, condicionlogica, condicion;
+non terminal NodoIfGenerico if;
+non terminal NodoAvg avg;
+non terminal List<NodoExpresion> lista;
 
 start with pgm;
 
-pgm ::= declaracion programa {: System.out.println("pgm Regla 0 Compila correctamente llegando al simbolo start");
-							s = s + "pgm Regla 0 Compila correctamente llegando al simbolo start\n";
-							writeSymbolTable2();
-							:};
+pgm ::= declaracion programa:programa 	{: System.out.println("pgm Regla 0 Compila correctamente llegando al simbolo start");
+											s = s + "pgm Regla 0 Compila correctamente llegando al simbolo start\n";
+											writeSymbolTable2();
+											RESULT = new NodoPrograma( programa ); :};
 
-listadesentencias ::= listadesentencias lineadesentencia {:System.out.println("[Regla 1] Sentencias"); 
-							s = s + "[Regla 1] Sentencias\n";:}
-			| lineadesentencia {:System.out.println("[Regla 2] Sentencia"); 
-							s = s + "[Regla 2] Sentencia\n";:};
+listadesentencias ::= 	listadesentencias:sentencias lineadesentencia:sentencia
+										{: System.out.println("[Regla 1] Sentencias"); 
+											s = s + "[Regla 1] Sentencias\n";
+                                            sentencias.add( sentencia );
+                                            RESULT = sentencias; :}
+						| lineadesentencia:sentencia
+										{: System.out.println("[Regla 2] Sentencia"); 
+											s = s + "[Regla 2] Sentencia\n";
+											ArrayList<NodoSentencia> sentencias = new ArrayList<NodoSentencia>();
+                                            sentencias.add( sentencia );
+                                            RESULT = sentencias; :};
 
-lineadesentencia ::= asignacion {:System.out.println("[Regla 3] Linea de sentencia - Asignación"); 
-							s = s + "[Regla 3] Linea de sentencia - Asignación\n";:}
-			| salida {:System.out.println("[Regla 4] Linea de sentencia - Salida"); 
-							s = s + "[Regla 4] Linea de sentencia - Salida\n";:}
-			| while {:System.out.println("[Regla 5] Linea de sentencia - While"); 
-							s = s + "[Regla 5] Linea de sentencia - While\n";:}
-			| if {:System.out.println("[Regla 6] Linea de sentencia - If"); 
-							s = s + "[Regla 6] Linea de sentencia - If\n";:};
+lineadesentencia ::= 	asignacion:asig {: System.out.println("[Regla 3] Linea de sentencia - Asignación"); 
+											s = s + "[Regla 3] Linea de sentencia - Asignación\n";
+											RESULT = asig; :}
+						| salida:salida {: System.out.println("[Regla 4] Linea de sentencia - Salida"); 
+											s = s + "[Regla 4] Linea de sentencia - Salida\n";
+											RESULT = salida; :}
+						| while:while 	{: System.out.println("[Regla 5] Linea de sentencia - While"); 
+											s = s + "[Regla 5] Linea de sentencia - While\n";
+											RESULT = while; :}
+						| if:if 		{: System.out.println("[Regla 6] Linea de sentencia - If"); 
+											s = s + "[Regla 6] Linea de sentencia - If\n";
+											RESULT = if; :};
 
-tipo ::= PInt:in {:System.out.println("[Regla 7] Tipo - INT"); 
-							s = s + "[Regla 7] Tipo - INT\n";
-							listaTipos.add(in.toString());:}
-			| PFloat:fl {:System.out.println("[Regla 8] Tipo - FLOAT"); 
-							s = s + "[Regla 8] Tipo - FLOAT\n";
-							listaTipos.add(fl.toString());:}
-			| PString:st {:System.out.println("[Regla 9] Tipo - STRING"); 
-							s = s + "[Regla 9] Tipo - STRING\n";
-							listaTipos.add(st.toString());:};
+tipo ::= 	PInt:in 					{: System.out.println("[Regla 7] Tipo - INT");
+											s = s + "[Regla 7] Tipo - INT\n";
+											listaTipos.add(in.toString()); :}
+			| PFloat:fl 				{: System.out.println("[Regla 8] Tipo - FLOAT"); 
+											s = s + "[Regla 8] Tipo - FLOAT\n";
+											listaTipos.add(fl.toString()); :}
+			| PString:st 				{: System.out.println("[Regla 9] Tipo - STRING"); 
+											s = s + "[Regla 9] Tipo - STRING\n";
+											listaTipos.add(st.toString()); :};
 
-cond ::= condicion {:System.out.println("[Regla 10] Cond - Condición"); 
-							s = s + "[Regla 10] Cond - Condición\n";:}
-			| condicionlogica {:System.out.println("[Regla 11] Cond - Condicion Lógica"); 
-							s = s + "[Regla 11] Cond - Condicion Lógica\n";:};
+cond ::= 	condicion:condicion			{: System.out.println("[Regla 10] Cond - Condición"); 
+											s = s + "[Regla 10] Cond - Condición\n";
+											RESULT = condicion; :}
+			| condicionlogica:condicionl
+										{: System.out.println("[Regla 11] Cond - Condicion Lógica"); 
+											s = s + "[Regla 11] Cond - Condicion Lógica\n";
+											RESULT = condicionl; :};
 
-while ::= While ParA cond ParC LlaveA listadesentencias LlaveC {:System.out.println("[Regla 12] While");
-							s = s + "[Regla 12] While\n";:};
+while ::= 	While ParA cond:condicion ParC LlaveA listadesentencias:sentencias LlaveC
+										{: System.out.println("[Regla 12] While");
+											s = s + "[Regla 12] While\n";
+											RESULT = new NodoWhile( condicion, sentencias ); :};
 
-if ::= If ParA cond ParC LlaveA listadesentencias LlaveC {:System.out.println("[Regla 13] If");
-							s = s + "[Regla 13] If\n";:}
-			| If ParA cond ParC LlaveA listadesentencias LlaveC Else LlaveA listadesentencias LlaveC {:System.out.println("[Regla 14] If Else");
-							s = s + "[Regla 14] If Else\n";:};
+if ::=	If ParA cond:condicion ParC LlaveA listadesentencias:sentencias LlaveC
+										{: System.out.println("[Regla 13] If");
+											s = s + "[Regla 13] If\n";
+											RESULT = new NodoIf( condicion, sentencias ); :}
+		| If ParA cond:condicion ParC LlaveA listadesentencias:sentencias LlaveC Else LlaveA listadesentencias:sentenciaselse LlaveC
+										{: System.out.println("[Regla 14] If Else");
+											s = s + "[Regla 14] If Else\n";
+											RESULT = new NodoIfElse( condicion, sentencias, sentenciaselse ); :};
 
-asignacion ::= VarId Asignacion expresion {:System.out.println("[Regla 15] Asignacion Expresion");
-							s = s + "[Regla 15] Asignacion Expresion\n";:}
-			| VarId Asignacion Const_String:cs {:System.out.println("[Regla 16] Asignacion String");
-							s = s + "[Regla 16] Asignacion String\n";
-							listaSimbolos.add(cs.toString());
-							listaSimbolosNombre.add("Const_String");:};
+asignacion ::=	VarId:id Asignacion expresion:expresion
+										{: System.out.println("[Regla 15] Asignacion Expresion");
+											s = s + "[Regla 15] Asignacion Expresion\n";
+											RESULT = new NodoAsig( NodoVardId( id ), expresion ); :}
+				| VarId:id Asignacion Const_String:cs
+										{: System.out.println("[Regla 16] Asignacion String");
+											s = s + "[Regla 16] Asignacion String\n";
+											listaSimbolos.add(cs.toString());
+											listaSimbolosNombre.add("Const_String");
+											RESULT = new NodoAsig( NodoVardId( id ), NodoCteString( cs ) ); :};
 
-expresion ::= expresion Suma termino {:System.out.println("[Regla 17] Expresion + Termino");
-							s = s + "[Regla 17] Expresion + Termino\n";:}
-			| expresion Resta termino {:System.out.println("[Regla 18] Expresion - Termino");
-							s = s + "[Regla 18] Expresion - Termino\n";:}
-			| termino {:System.out.println("[Regla 19] Expresion Termino");
-							s = s + "[Regla 19] Expresion Termino\n";:};
+expresion ::= 	expresion:expresion Suma termino:termino
+										{: System.out.println("[Regla 17] Expresion + Termino");
+											s = s + "[Regla 17] Expresion + Termino\n";
+											RESULT = new NodoSuma( expresion, termino ); :}
+				| expresion:expresion Resta termino:termino
+										{: System.out.println("[Regla 18] Expresion - Termino");
+											s = s + "[Regla 18] Expresion - Termino\n";
+											RESULT = new NodoMResta( expresion, termino ); :}
+				| termino:termino 		{: System.out.println("[Regla 19] Expresion Termino");
+											s = s + "[Regla 19] Expresion Termino\n";
+											RESULT = termino; :};
 
-termino ::= termino Multiplicacion factor {:System.out.println("[Regla 20] Termino * Factor");
-							s = s + "[Regla 20] Termino * Factor\n";:}
-			| termino Division factor {:System.out.println("[Regla 21] Termino / Factor");
-							s = s + "[Regla 21] Termino / Factor\n";:}
-			| factor {:System.out.println("[Regla 22] Termino Factor");
-							s = s + "[Regla 22] Termino Factor\n";:};
+termino ::=	termino:termino Multiplicacion factor:factor
+										{: System.out.println("[Regla 20] Termino * Factor");
+											s = s + "[Regla 20] Termino * Factor\n";
+											RESULT = new NodoMultiplicacion( termino, factor ); :}
+			| termino:termino Division factor:factor
+										{: System.out.println("[Regla 21] Termino / Factor");
+											s = s + "[Regla 21] Termino / Factor\n";
+											RESULT = new NodoDivision( termino, factor ); :}
+			| factor:factor 			{: System.out.println("[Regla 22] Termino Factor");
+											s = s + "[Regla 22] Termino Factor\n";
+											RESULT = factor; :};
 
-factor ::= VarId {:System.out.println("[Regla 23] Factor VarId");
-							s = s + "[Regla 23] Factor VarId\n";:}
-			| Numero:nu {:System.out.println("[Regla 24] Factor Numero");
-							s = s + "[Regla 24] Factor Numero\n";
-							listaSimbolos.add(nu.toString());
-							listaSimbolosNombre.add("Numero");:}
-			| Real:re {:System.out.println("[Regla 25] Factor Real");
-							s = s + "[Regla 25] Factor Real\n";
-							listaSimbolos.add(re.toString());
-							listaSimbolosNombre.add("Real");:}
-			| ParA expresion ParC {:System.out.println("[Regla 26] Factor Expresion");
-							s = s + "[Regla 26] Factor Expresion\n";:}
-			| avg {:System.out.println("[Regla 27] Factor Avg");
-							s = s + "[Regla 27] Factor Avg\n";:};
+factor ::=	VarId:id 					{: System.out.println("[Regla 23] Factor VarId");
+											s = s + "[Regla 23] Factor VarId\n";
+											RESULT = new NodoVarId(id); :}
+			| Numero:int 				{: System.out.println("[Regla 24] Factor Numero");
+											s = s + "[Regla 24] Factor Numero\n";
+											listaSimbolos.add(nu.toString());
+											listaSimbolosNombre.add("Numero");
+											RESULT = new NodoCteInt(Integer.parseInt(int)); :}
+			| Real:float 				{: System.out.println("[Regla 25] Factor Real");
+											s = s + "[Regla 25] Factor Real\n";
+											listaSimbolos.add(re.toString());
+											listaSimbolosNombre.add("Real");
+											RESULT = new NodoCteFloat(Float.parseFloat(float)); :}
+			| ParA expresion:expresion ParC
+										{: System.out.println("[Regla 26] Factor Expresion");
+											s = s + "[Regla 26] Factor Expresion\n";
+											RESULT = expresion; :}
+			| avg:avg 					{: System.out.println("[Regla 27] Factor Avg");
+											s = s + "[Regla 27] Factor Avg\n";
+											RESULT = avg; :};
 
-salida ::= Print Const_String:cs {:System.out.println("[Regla 28] Factor Expresion");
-							s = s + "[Regla 28] Factor Expresion\n";
-							listaSimbolos.add(cs.toString());
-							listaSimbolosNombre.add("Const_String");:};
+salida ::=	Print Const_String:cs 		{: System.out.println("[Regla 28] Factor Expresion");
+											s = s + "[Regla 28] Factor Expresion\n";
+											listaSimbolos.add(cs.toString());
+											listaSimbolosNombre.add("Const_String");
+											RESULT = new NodoSalida( NodoCteString( cs ) ); :};
 
-condicionlogica ::= ParA condicion ParC {:System.out.println("[Regla 29] (Condicion)");
-							s = s + "[Regla 29] Condicion\n";:}
-			| condicion And condicion {:System.out.println("[Regla 30] Condicion And Condicion");
-							s = s + "[Regla 30] Condicion And Condicion\n";:}
-			| condicion Or condicion {:System.out.println("[Regla 31] Condicion Or Condicion");
-							s = s + "[Regla 31] Condicion Or Condicion\n";:}
-			| ParA condicion ParC And ParA condicion ParC {:System.out.println("[Regla 32] (Condicion) And (Condicion)");
-							s = s + "[Regla 32] (Condicion) And (Condicion)\n";:}
-			| ParA condicion ParC  Or ParA condicion ParC {:System.out.println("[Regla 33] (Condicion) Or (Condicion)");
-							s = s + "[Regla 33] (Condicion) Or (Condicion)\n";:};
+condicionlogica ::=	ParA condicion:condicion ParC
+										{: System.out.println("[Regla 29] (Condicion)");
+											s = s + "[Regla 29] Condicion\n";
+											RESULT = condicion; :}
+					| condicion:condicion_i And condicion:condicion_d
+										{: System.out.println("[Regla 30] Condicion And Condicion");
+											s = s + "[Regla 30] Condicion And Condicion\n";
+											RESULT = new NodoAnd( condicion_i, condicion_d ); :}
+					| condicion:condicion_i Or condicion:condicion_d
+										{: System.out.println("[Regla 31] Condicion Or Condicion");
+											s = s + "[Regla 31] Condicion Or Condicion\n";
+											RESULT = new NodoOr( condicion_i, condicion_d ); :}
+					| ParA condicion:condicion_i ParC And ParA condicion:condicion_d ParC
+										{: System.out.println("[Regla 32] (Condicion) And (Condicion)");
+											s = s + "[Regla 32] (Condicion) And (Condicion)\n";
+											RESULT = new NodoAnd( condicion_i, condicion_d ); :}
+					| ParA condicion:condicion_i ParC  Or ParA condicion:condicion_d ParC
+										{: System.out.println("[Regla 33] (Condicion) Or (Condicion)");
+											s = s + "[Regla 33] (Condicion) Or (Condicion)\n";
+											RESULT = new NodoOr( condicion_i, condicion_d ); :};
 
-condicion ::= expresion op_comp expresion {:System.out.println("[Regla 34] Expresion Operacion Logica Expresion");
-							s = s + "[Regla 34] Expresion Operacion Logica Expresion\n";:};
+condicion ::=	expresion:expresion_i Mayor expresion:expresion_d
+										{: System.out.println("[Regla 34] Expresion Operacion Mayor Expresion");
+											s = s + "[Regla 34] Expresion Operacion Mayor Expresion\n";
+											RESULT = new NodoMayor( expresion_i, expresion_d ); :}
+				| expresion:expresion_i MayorI expresion:expresion_d
+										{: System.out.println("[Regla 35] Expresion Operacion MayorI Expresion");
+											s = s + "[Regla 35] Expresion Operacion MayorI Expresion\n";
+											RESULT = new NodoMayorI( expresion_i, expresion_d ); :}
+				| expresion:expresion_i Menor expresion:expresion_d
+										{: System.out.println("[Regla 36] Expresion Operacion Menor Expresion");
+											s = s + "[Regla 36] Expresion Operacion Menor Expresion\n";
+											RESULT = new NodoMenor( expresion_i, expresion_d ); :}
+				| expresion:expresion_i MenorI expresion:expresion_d
+										{: System.out.println("[Regla 37] Expresion Operacion MenorI Expresion");
+											s = s + "[Regla 37] Expresion Operacion MenorI Expresion\n";
+											RESULT = new NodoMenorI( expresion_i, expresion_d ); :}
+				| expresion:expresion_i Distinto expresion:expresion_d
+										{: System.out.println("[Regla 38] Expresion Operacion Distinto Expresion");
+											s = s + "[Regla 38] Expresion Operacion Distinto Expresion\n";
+											RESULT = new NodoDistinto( expresion_i, expresion_d ); :}
+				| expresion:expresion_i Igual expresion:expresion_d
+										{: System.out.println("[Regla 39] Expresion Operacion Igual Expresion");
+											s = s + "[Regla 39] Expresion Operacion Igual Expresion\n";
+											RESULT = new NodoIgual( expresion_i, expresion_d ); :};
 
-op_comp ::= Mayor {:System.out.println("[Regla 35] Operacion Mayor");
-							s = s + "[Regla 35] Operacion Mayor\n";:}
-			| MayorI {:System.out.println("[Regla 36] Operacion MayorI");
-							s = s + "[Regla 36] Operacion MayorI\n";:}
-			| Menor {:System.out.println("[Regla 37] Operacion Menor");
-							s = s + "[Regla 37] Operacion Menor\n";:}
-			| MenorI {:System.out.println("[Regla 38] Operacion MenorI");
-							s = s + "[Regla 38] Operacion MenorI\n";:}
-			| Distinto {:System.out.println("[Regla 39] Operacion Distinto");
-							s = s + "[Regla 39] Operacion Distinto\n";:}
-			| Igual {:System.out.println("[Regla 40] Operacion Igual");
-							s = s + "[Regla 40] Operacion Igual\n";:};
+declaracion ::=	DeclareB listadedeclaraciones DeclareE
+										{: System.out.println("[Regla 40] Declaracion");
+											s = s + "[Regla 40] Declaracion\n"; :};
 
-declaracion ::= DeclareB listadedeclaraciones DeclareE {:System.out.println("[Regla 41] Declaracion");
-							s = s + "[Regla 41] Declaracion\n";:};
+listadedeclaraciones ::=	CorcheteA lineadedeclaracion CorcheteC
+										{: System.out.println("[Regla 41] Lista de Declaraciones");
+											s = s + "[Regla 41] Lista de Declaraciones\n";
+											writeSymbolTable(); :}
+							| listadedeclaraciones CorcheteA lineadedeclaracion CorcheteC
+										{: System.out.println("[Regla 42] Lista de Declaraciones multiples");
+											s = s + "[Regla 42] Lista de Declaraciones multiples\n";
+											writeSymbolTable(); :};
 
-listadedeclaraciones ::= CorcheteA lineadedeclaracion CorcheteC {:System.out.println("[Regla 42] Lista de Declaraciones");
-							s = s + "[Regla 42] Lista de Declaraciones\n";
-							writeSymbolTable();:}
-			| listadedeclaraciones CorcheteA lineadedeclaracion CorcheteC {:System.out.println("[Regla 43] Lista de Declaraciones multiples");
-							s = s + "[Regla 43] Lista de Declaraciones multiples\n";
-							writeSymbolTable();:};
+lineadedeclaracion ::=	VarId:id CorcheteC Asignacion CorcheteA tipo:ti
+										{: System.out.println("[Regla 43] Linea de declaracion");
+											s = s + "[Regla 43] Linea de declaracion\n";
+											listaVarId.add(id.toString()); :}
+						| VarId:id Coma lineadedeclaracion Coma tipo
+										{: System.out.println("[Regla 44] Linea de declaracion multiple");
+											s = s + "[Regla 44] Linea de declaracion multiple\n";
+											listaVarId.add(id.toString()); :};
 
-lineadedeclaracion ::= VarId:id CorcheteC Asignacion CorcheteA tipo:ti {:System.out.println("[Regla 44] Linea de declaracion");
-							s = s + "[Regla 44] Linea de declaracion\n";
-							listaVarId.add(id.toString());:}
-			| VarId:id Coma lineadedeclaracion Coma tipo {:System.out.println("[Regla 45] Linea de declaracion multiple");
-							s = s + "[Regla 45] Linea de declaracion multiple\n";
-							listaVarId.add(id.toString());:};
+programa ::=	ProgramB listadesentencias:sentencias ProgramE
+										{: System.out.println("[Regla 45] Programa");
+											s = s + "[Regla 45] Programa\n";
+											RESULT = sentencias; :};
 
-programa ::= ProgramB listadesentencias ProgramE {:System.out.println("[Regla 46] Programa");
-							s = s + "[Regla 46] Programa\n";:};
+avg ::=	Avg ParA CorcheteA lista:lista CorcheteC ParC
+										{: System.out.println("[Regla 46] Programa");
+											s = s + "[Regla 46] Programa\n";
+											RESULT = new NodoAvg( lista ); :};
 
-avg ::= Avg ParA CorcheteA lista CorcheteC ParC {:System.out.println("[Regla 47] Programa");
-							s = s + "[Regla 47] Programa\n";:};
-
-lista ::= lista Coma expresion {:System.out.println("[Regla 48] Lista");
-                               		s = s + "[Regla 48] Lista\n";:}
-			| expresion {:System.out.println("[Regla 49] Lista expresion");
-                               		s = s + "[Regla 49] Lista expresion\n";:};
+lista ::=	lista:lista Coma expresion:expresion
+										{: System.out.println("[Regla 47] Lista");
+											s = s + "[Regla 47] Lista\n";
+                                            lista.add(expresion);
+                                            RESULT = lista; :}
+			| expresion:expresion 		{: System.out.println("[Regla 48] Lista expresion");
+											s = s + "[Regla 48] Lista expresion\n";
+											RESULT = expresion;
+											ArrayList<NodoExpresion> lista = new ArrayList<NodoExpresion>();
+                                            lista.add(expresion);
+                                            RESULT = lista; :};
