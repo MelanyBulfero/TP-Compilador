@@ -13,7 +13,6 @@ ENDDECLARE
 
 BEGIN.PROGRAM
 
-PRINT  "Prueba.txt AnalizadorLexico"
 contador := 0
 suma := 76.5
 contar := 18.22
@@ -23,7 +22,6 @@ while (contador <= 9) {
 	actual := (contador / 0.342) + (contador * (contar + 4.67))
 	suma := suma + actual
 	}
-PRINT  "La variable suma"
 
 
 If ((actual > 2) and (actual <> 0)){
@@ -34,11 +32,5 @@ Else{
 	PRINT "no es mayor que 2"
 	palabra := "es mayor"
 }
-
-
-d1 := AVG ([2 , a+b , c*(d+e) , 48])
-
-
-d2 := 3.14 + AVG([a1*45+6,56,1.22])
 
 END.PROGRAM

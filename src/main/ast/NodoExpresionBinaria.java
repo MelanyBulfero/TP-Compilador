@@ -1,4 +1,4 @@
-package pruebaast.ast;
+package main.ast;
 
 public class NodoExpresionBinaria extends NodoExpresion {
     private final NodoExpresion izquierda;

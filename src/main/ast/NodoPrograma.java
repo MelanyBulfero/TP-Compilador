@@ -1,4 +1,4 @@
-package pruebaast.ast;
+package main.ast;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class NodoPrograma extends Nodo {
         StringBuilder resultado = new StringBuilder();
         resultado.append("graph G {");
 
-        resultado.append(miId + " [label=\"Programa\"]\n");
+        resultado.append(miId + " [label=\"" + getDescripcionNodo() + "\"]\n");
         for (NodoSentencia sentencia : this.sentencias) {
             resultado.append(sentencia.graficar(miId));
         }

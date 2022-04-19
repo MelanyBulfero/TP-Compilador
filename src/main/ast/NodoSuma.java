@@ -1,4 +1,4 @@
-package pruebaast.ast;
+package main.ast;
 
 public class NodoSuma extends NodoExpresionBinaria {
 

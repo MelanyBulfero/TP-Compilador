@@ -1,17 +1,17 @@
-package pruebaast.ast;
+package main.ast;
 
+public class NodoOr extends NodoCondicion {
 
-public class NodoOr extends NodoExpresionBooleana {
-private final NodoExpresionBooleana izquierda;
-private final NodoExpresionBooleana derecha;
+	private final NodoCondicion izquierda;
+	private final NodoCondicion derecha;
 
-public NodoOr (NodoExpresionBooleana izquierda, NodoExpresionBooleana derecha) {
+	public NodoOr (NodoCondicion izquierda, NodoCondicion derecha) {
         super("OR");
         this.izquierda = izquierda;
         this.derecha = derecha;
     }
 
-@Override
+	@Override
     protected String graficar(String idPadre) {
         final String miId = this.getIdNodo();
         return super.graficar(idPadre) +

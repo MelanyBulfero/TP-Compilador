@@ -2,14 +2,16 @@ package main.ast;
 
 import java.util.List;
 
-public class NodoIf extends NodoIfGenerico {
+public class NodoIfElse extends NodoIfGenerico {
     private final NodoCondicion condicion;
     private final List<NodoSentencia> sentencias;
+    private final List<NodoSentencia> sentenciaselse;
 
-    public NodoIf(NodoCondicion condicion, List<NodoSentencia> sentencias) {
+    public NodoIfElse(NodoCondicion condicion, List<NodoSentencia> sentencias, List<NodoSentencia> sentenciaselse) {
         super("IF");
         this.condicion = condicion;
         this.sentencias = sentencias;
+        this.sentenciaselse = sentenciaselse;
     }
 
     @Override
@@ -27,6 +29,14 @@ public class NodoIf extends NodoIfGenerico {
 		String idNodoThen = nodoThen.getIdNodo();
         for (NodoSentencia sentencia: sentencias) {
             resultado.append(sentencia.graficar(idNodoThen));
+        }
+
+        Nodo nodoElse = new Nodo("Else");
+        resultado.append(nodoElse.graficar(miId));
+
+		String idNodoElse = nodoElse.getIdNodo();
+        for (NodoSentencia sentencia: sentenciaselse) {
+            resultado.append(sentencia.graficar(idNodoElse));
         }
         return resultado.toString();
     }

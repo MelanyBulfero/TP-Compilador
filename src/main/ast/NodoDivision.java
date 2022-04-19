@@ -1,4 +1,4 @@
-package pruebaast.ast;
+package main.ast;
 
 public class NodoDivision extends NodoExpresionBinaria {
 

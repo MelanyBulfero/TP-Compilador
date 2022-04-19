@@ -1,16 +1,16 @@
-package pruebaast.ast;
+package main.ast;
 
 
-public class NodoComparacion extends NodoExpresionBooleana {
+public class NodoComparacion extends NodoCondicion {
 private final NodoExpresion  izquierda;
 private final NodoExpresion  derecha;
 
-    public NodoComparacion (String nombre,NodoExpresion izquierda, NodoExpresion derecha) {
+    public NodoComparacion (String nombre, NodoExpresion izquierda, NodoExpresion derecha) {
         super(nombre);
         this.izquierda = izquierda;
         this.derecha = derecha;
-
     }
+    
      @Override
     protected String graficar(String idPadre) {
         final String miId = this.getIdNodo();

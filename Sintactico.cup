@@ -115,7 +115,7 @@ non terminal NodoPrograma pgm;
 non terminal List<NodoSentencia> listadesentencias, programa;
 non terminal NodoSentencia lineadesentencia;
 non terminal NodoExpresion expresion, termino, factor;
-non terminal NodoAsignacion asignacion;
+non terminal NodoAsig asignacion;
 non terminal NodoSalida salida;
 non terminal NodoWhile while;
 non terminal NodoCondicion cond, condicionlogica, condicion;
@@ -148,12 +148,12 @@ lineadesentencia ::= 	asignacion:asig {: System.out.println("[Regla 3] Linea de 
 						| salida:salida {: System.out.println("[Regla 4] Linea de sentencia - Salida"); 
 											s = s + "[Regla 4] Linea de sentencia - Salida\n";
 											RESULT = salida; :}
-						| while:while 	{: System.out.println("[Regla 5] Linea de sentencia - While"); 
+						| while:ciclo	{: System.out.println("[Regla 5] Linea de sentencia - While"); 
 											s = s + "[Regla 5] Linea de sentencia - While\n";
-											RESULT = while; :}
-						| if:if 		{: System.out.println("[Regla 6] Linea de sentencia - If"); 
+											RESULT = ciclo; :}
+						| if:si 		{: System.out.println("[Regla 6] Linea de sentencia - If"); 
 											s = s + "[Regla 6] Linea de sentencia - If\n";
-											RESULT = if; :};
+											RESULT = si; :};
 
 tipo ::= 	PInt:in 					{: System.out.println("[Regla 7] Tipo - INT");
 											s = s + "[Regla 7] Tipo - INT\n";
@@ -190,13 +190,13 @@ if ::=	If ParA cond:condicion ParC LlaveA listadesentencias:sentencias LlaveC
 asignacion ::=	VarId:id Asignacion expresion:expresion
 										{: System.out.println("[Regla 15] Asignacion Expresion");
 											s = s + "[Regla 15] Asignacion Expresion\n";
-											RESULT = new NodoAsig( NodoVardId( id ), expresion ); :}
+											RESULT = new NodoAsig( new NodoVarId( id ), expresion ); :}
 				| VarId:id Asignacion Const_String:cs
 										{: System.out.println("[Regla 16] Asignacion String");
 											s = s + "[Regla 16] Asignacion String\n";
 											listaSimbolos.add(cs.toString());
 											listaSimbolosNombre.add("Const_String");
-											RESULT = new NodoAsig( NodoVardId( id ), NodoCteString( cs ) ); :};
+											RESULT = new NodoAsig( new NodoVarId( id ), new NodoCteString( cs ) ); :};
 
 expresion ::= 	expresion:expresion Suma termino:termino
 										{: System.out.println("[Regla 17] Expresion + Termino");
@@ -205,7 +205,7 @@ expresion ::= 	expresion:expresion Suma termino:termino
 				| expresion:expresion Resta termino:termino
 										{: System.out.println("[Regla 18] Expresion - Termino");
 											s = s + "[Regla 18] Expresion - Termino\n";
-											RESULT = new NodoMResta( expresion, termino ); :}
+											RESULT = new NodoResta( expresion, termino ); :}
 				| termino:termino 		{: System.out.println("[Regla 19] Expresion Termino");
 											s = s + "[Regla 19] Expresion Termino\n";
 											RESULT = termino; :};
@@ -225,16 +225,16 @@ termino ::=	termino:termino Multiplicacion factor:factor
 factor ::=	VarId:id 					{: System.out.println("[Regla 23] Factor VarId");
 											s = s + "[Regla 23] Factor VarId\n";
 											RESULT = new NodoVarId(id); :}
-			| Numero:int 				{: System.out.println("[Regla 24] Factor Numero");
+			| Numero:integer 			{: System.out.println("[Regla 24] Factor Numero");
 											s = s + "[Regla 24] Factor Numero\n";
-											listaSimbolos.add(nu.toString());
+											listaSimbolos.add(integer.toString());
 											listaSimbolosNombre.add("Numero");
-											RESULT = new NodoCteInt(Integer.parseInt(int)); :}
-			| Real:float 				{: System.out.println("[Regla 25] Factor Real");
+											RESULT = new NodoCteInt(Integer.parseInt(integer)); :}
+			| Real:real 				{: System.out.println("[Regla 25] Factor Real");
 											s = s + "[Regla 25] Factor Real\n";
-											listaSimbolos.add(re.toString());
+											listaSimbolos.add(real.toString());
 											listaSimbolosNombre.add("Real");
-											RESULT = new NodoCteFloat(Float.parseFloat(float)); :}
+											RESULT = new NodoCteFloat(Float.parseFloat(real)); :}
 			| ParA expresion:expresion ParC
 										{: System.out.println("[Regla 26] Factor Expresion");
 											s = s + "[Regla 26] Factor Expresion\n";
