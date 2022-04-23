@@ -334,7 +334,6 @@ lista ::=	lista:lista Coma expresion:expresion
                                             RESULT = lista; :}
 			| expresion:expresion 		{: System.out.println("[Regla 48] Lista expresion");
 											s = s + "[Regla 48] Lista expresion\n";
-											RESULT = expresion;
 											ArrayList<NodoExpresion> lista = new ArrayList<NodoExpresion>();
                                             lista.add(expresion);
                                             RESULT = lista; :};

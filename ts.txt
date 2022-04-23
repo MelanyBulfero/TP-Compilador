@@ -21,6 +21,8 @@ _"actualesmayorque2ydistintode",Const_String,,"actualesmayorque2ydistintode",30
 _"es mayor",Const_String,,"es mayor",10
 _"no es mayor que 2",Const_String,,"no es mayor que 2",19
 _"es mayor",Const_String,,"es mayor",10
+_12,Numero,,12,
+_5,Numero,,5,
 _2,Numero,,2,
 _48,Numero,,48,
 _3.14,Real,,3.14,

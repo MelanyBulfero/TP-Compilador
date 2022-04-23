@@ -850,10 +850,10 @@ class CUP$parser$actions {
               NodoExpresion RESULT =null;
 		int avgleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int avgright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-//		NodoAvg avg = (NodoAvg)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		NodoAvg avg = (NodoAvg)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 System.out.println("[Regla 27] Factor Avg");
 											s = s + "[Regla 27] Factor Avg\n";
-//											RESULT = avg; 
+											RESULT = avg; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("factor",10, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1136,18 +1136,18 @@ class CUP$parser$actions {
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-//          case 47: // avg ::= Avg ParA CorcheteA lista CorcheteC ParC 
-//            {
-//              NodoAvg RESULT =null;
-//		int listaleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
-//		int listaright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-//		List<NodoExpresion> lista = (List<NodoExpresion>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
-//		 System.out.println("[Regla 46] Programa");
-//											s = s + "[Regla 46] Programa\n";
-//											RESULT = new NodoAvg( lista ); 
-//              CUP$parser$result = parser.getSymbolFactory().newSymbol("avg",18, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
-//            }
-//          return CUP$parser$result;
+          case 47: // avg ::= Avg ParA CorcheteA lista CorcheteC ParC 
+            {
+              NodoAvg RESULT =null;
+		int listaleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int listaright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		List<NodoExpresion> lista = (List<NodoExpresion>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		 System.out.println("[Regla 46] Programa");
+											s = s + "[Regla 46] Programa\n";
+											RESULT = new NodoAvg( lista ); 
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("avg",18, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+            }
+          return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 48: // lista ::= lista Coma expresion 
@@ -1176,7 +1176,6 @@ class CUP$parser$actions {
 		NodoExpresion expresion = (NodoExpresion)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 System.out.println("[Regla 48] Lista expresion");
 											s = s + "[Regla 48] Lista expresion\n";
-											RESULT = (List<NodoExpresion>) expresion;
 											ArrayList<NodoExpresion> lista = new ArrayList<NodoExpresion>();
                                             lista.add(expresion);
                                             RESULT = lista; 
