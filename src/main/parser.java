@@ -323,9 +323,9 @@ public class parser extends java_cup.runtime.lr_parser {
 			String A = listaSimbolos.get(i);
 			String B = listaSimbolosNombre.get(i);
 			if (B=="Const_String"){
-				Linea="_"+A+","+B+",,"+A+","+A.length();
+				Linea="_"+A+","+B+", ,"+A+","+A.length();
 			}else{
-				Linea="_"+A+","+B+",,"+A+",";
+				Linea="_"+A+","+B+", ,"+A+", ";
 			}
 			
  			try {
@@ -363,7 +363,7 @@ public class parser extends java_cup.runtime.lr_parser {
 		for (int i = 0; i < listaVarId.size(); i++) {
 			String ID = listaVarId.get(i);
 			String T = listaTipos.get(--j);
-			Linea=ID+",VarId,"+T+",,";
+			Linea=ID+",VarId,"+T+", , ";
  			try {
 				bw.write(Linea);
 				bw.newLine();

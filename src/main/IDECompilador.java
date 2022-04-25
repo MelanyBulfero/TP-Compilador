@@ -2,9 +2,11 @@ package main;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.GridLayout;
@@ -17,6 +19,8 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.TextArea;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
@@ -28,9 +32,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.awt.event.ActionEvent;
+
+import main.ast.*;
 
 public class IDECompilador extends JFrame {
 
@@ -246,7 +253,6 @@ public class IDECompilador extends JFrame {
 		gbc_btnRealizarAnalisis.gridy = 7;
 		contentPane.add(btnRealizarAnalisis, gbc_btnRealizarAnalisis);
 		
-		
 		JLabel lblResutadosDelAnlisis = new JLabel("Resultados del an\u00E1lisis");
 		lblResutadosDelAnlisis.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		GridBagConstraints gbc_lblResutadosDelAnlisis = new GridBagConstraints();
@@ -255,6 +261,87 @@ public class IDECompilador extends JFrame {
 		gbc_lblResutadosDelAnlisis.gridx = 1;
 		gbc_lblResutadosDelAnlisis.gridy = 8;
 		contentPane.add(lblResutadosDelAnlisis, gbc_lblResutadosDelAnlisis);
+		
+		// Tabla de símblos
+		
+		JButton btnTable = new JButton("Ver tabla de simbolos");
+		btnTable.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new SymbolTable();
+			}
+		});
+		GridBagConstraints gbc_btnTable = new GridBagConstraints();
+		gbc_btnTable.gridwidth = 5;
+		gbc_btnTable.insets = new Insets(0, 0, 0, 5);
+		gbc_btnTable.gridx = 2;
+		gbc_btnTable.gridy = 11;
+		contentPane.add(btnTable, gbc_btnTable);
+		
+		// AST
+		
+		JButton btnTree = new JButton("Generar AST");
+		btnTree.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (fr == null) {
+					JOptionPane.showMessageDialog(null,"No hay archivo cargado");
+				}else {
+					saveFile(txaArchivo,false);
+					Lexico lexer = new Lexico(fr);
+					parser sintactico = new parser(lexer);
+					try {		
+						NodoPrograma programa = (NodoPrograma) sintactico.parse().value;
+						FileWriter treeFile = new FileWriter("arbol.dot");
+						PrintWriter pw = new PrintWriter(treeFile);
+						pw.println(programa.graficar());
+						treeFile.close();
+						
+					} catch (IOException e1) {
+						JOptionPane.showMessageDialog(null,"Error");
+					} catch (Exception e2) {
+						// TODO Auto-generated catch block
+						if (!sintactico.Error.isEmpty()) {
+							JOptionPane.showMessageDialog(null,sintactico.Error);
+						}
+						if (!lexer.Error.isEmpty()) {
+							JOptionPane.showMessageDialog(null,lexer.Error);
+						}
+					}
+					String cmd = "dot -Tpng arbol.dot -o arbol.png";
+					try {
+						Runtime.getRuntime().exec(cmd);
+						resultadoAnalisis.setText("AST generado");
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					String path = System.getProperty("user.dir") + "\\arbol.png";
+					try {
+						JLabel treeImg = new JLabel(new ImageIcon(path));
+						JFrame frame = new JFrame("AST");
+						frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+						frame.setBounds(100,100,1000,500);
+						contentPane.setOpaque(true);
+						JScrollPane scroll = new JScrollPane(treeImg);
+						scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+						scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+						frame.add(scroll);
+						frame.setVisible(true);
+						frame.setResizable(true);
+					} catch (Exception e3) {
+						//ignore
+					}
+					
+					path = null;
+				}	
+			}
+		});
+		GridBagConstraints gbc_btnTree = new GridBagConstraints();
+		gbc_btnTree.gridwidth = 3;
+		gbc_btnTree.insets = new Insets(0, 0, 0, 5);
+		gbc_btnTree.gridx = 0;
+		gbc_btnTree.gridy =11;
+		contentPane.add(btnTree, gbc_btnTree);
 	
 	}
 	
