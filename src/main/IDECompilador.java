@@ -314,6 +314,12 @@ public class IDECompilador extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					try {
+						Thread.sleep(300);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					
 					String path = System.getProperty("user.dir") + "\\arbol.png";
 					try {
