@@ -7,6 +7,6 @@
 
 ## Entregas
 
-[Jar Primera Entrega](https://github.com/MelanyBulfero/TP-Compilador/blob/main/jar_files/Entrega1.jar)
+[Jar Primera Entrega](https://github.com/MelanyBulfero/TP-Compilador/blob/main/Entregas/PrimeraEntrega/Compilador-1.jar)
 
-[Jar Segunda Entrega](https://github.com/MelanyBulfero/TP-Compilador/blob/main/jar_files/Entrega2-v2.jar)
+[Jar Segunda Entrega](https://github.com/MelanyBulfero/TP-Compilador/blob/main/Entregas/SegundaEntrega/Compilador-2.jar)
