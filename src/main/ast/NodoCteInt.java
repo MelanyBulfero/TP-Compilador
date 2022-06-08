@@ -6,10 +6,16 @@ public class NodoCteInt extends NodoExpresion {
     public NodoCteInt(int valor) {
         super("CteInt");
         this.valor = valor;
+        this.setId("_" + valor);
     }
 
     @Override
     public String getDescripcionNodo() {
         return super.getDescripcionNodo() + ": " + Integer.toString(valor);
+    }
+
+    @Override
+    public boolean soyHoja() {
+        return true;
     }
 }

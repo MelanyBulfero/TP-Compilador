@@ -14,4 +14,13 @@ public class NodoSalida extends NodoSentencia {
         return super.graficar(idPadre) +
                 cs.graficar(miId);
     }
+
+    @Override
+    public String generarAssembler() {
+        String variable = "_" + this.cs.getValor().replace("\"", "").replace(".", "punto").replace(" ", "")
+                .replace("<","@menor").replace(">","@mayor");
+        String assembler = "displayString " + variable + "\n"
+                + "newLine 1 \n" ;
+        return assembler;
+    }
 }

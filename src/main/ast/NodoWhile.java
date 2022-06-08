@@ -5,12 +5,16 @@ import java.util.List;
 public class NodoWhile extends NodoSentencia {
     private final NodoCondicion condicion;
     private final List<NodoSentencia> cuerpo;
+    static int count = 0;
+    protected int whileQ;
   
 
     public NodoWhile(NodoCondicion condicion, List<NodoSentencia> cuerpo) {
         super("WHILE");
         this.condicion = condicion;
         this.cuerpo = cuerpo;
+        count++;
+        this.whileQ = count;
     }
 
     @Override
@@ -32,6 +36,22 @@ public class NodoWhile extends NodoSentencia {
             resultado.append(sentencia.graficar(idNodoCuerpo));
         }
         return resultado.toString();
+    }
+
+    @Override
+    public String generarAssembler() {
+    	String assembler = "INST_WHILE_BEGIN" + this.whileQ + ":\n"
+                + this.condicion.generarAssembler()
+                + "MOV EAX, " + this.condicion.getId() + "\n"
+                + "MOV EBX, 1\n"
+                + "CMP EAX, EBX \n"
+                + "JNE INST_WHILE_END" + this.whileQ + "\n";
+        for (NodoSentencia sentencia : cuerpo) {
+            assembler += sentencia.generarAssembler();
+        }
+    	assembler += "JMP INST_WHILE_BEGIN" + this.whileQ + "\n"
+                + "INST_WHILE_END" + this.whileQ + ":\n";
+        return assembler;
     }
 }
 

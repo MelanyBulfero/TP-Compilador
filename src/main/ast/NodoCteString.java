@@ -6,6 +6,7 @@ public class NodoCteString extends NodoExpresion {
     public NodoCteString(String valor) {
         super("CteString");
         this.valor = valor;
+        this.setId("_" + this.valor.replace("\"","").replace(" ","").replace(".","@punto").replace(",","@coma").replace(".","@punto").replace(",","@coma"));
     }
     
     private String normalize(String denormalizedString) {
@@ -19,6 +20,16 @@ public class NodoCteString extends NodoExpresion {
             i++;
         }
         return normalizedString.toString();
+    }
+
+    @Override
+    public boolean soyHoja() {
+        return true;
+    }
+
+    @Override
+    public String getValor() {
+        return valor;
     }
 
     @Override

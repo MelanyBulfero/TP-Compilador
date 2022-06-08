@@ -5,13 +5,17 @@ import java.util.List;
 public class NodoIfElse extends NodoIfGenerico {
     private final NodoCondicion condicion;
     private final List<NodoSentencia> sentencias;
-    private final List<NodoSentencia> sentenciaselse;
+    private final List<NodoSentencia> sentenciasElse;
+    static int count = 0;
+    protected int ifElseQ;
 
     public NodoIfElse(NodoCondicion condicion, List<NodoSentencia> sentencias, List<NodoSentencia> sentenciaselse) {
         super("IF");
         this.condicion = condicion;
         this.sentencias = sentencias;
-        this.sentenciaselse = sentenciaselse;
+        this.sentenciasElse = sentenciaselse;
+        count++;
+        ifElseQ = count;
     }
 
     @Override
@@ -35,9 +39,29 @@ public class NodoIfElse extends NodoIfGenerico {
         resultado.append(nodoElse.graficar(miId));
 
 		String idNodoElse = nodoElse.getIdNodo();
-        for (NodoSentencia sentencia: sentenciaselse) {
-            resultado.append(sentencia.graficar(idNodoElse));
+        for (NodoSentencia sentenciaElse: sentenciasElse) {
+            resultado.append(sentenciaElse.graficar(idNodoElse));
         }
         return resultado.toString();
+    }
+
+    @Override
+    public String generarAssembler() {
+    	String assembler = this.condicion.generarAssembler()
+                + "MOV EAX, " + this.condicion.getId()  + "\n"
+    			+ "MOV EBX, 1\n"
+                + "CMP EAX, EBX \n"
+                + "JNE INST_IF_ELSE" + this.ifElseQ + "\n";
+        for (NodoSentencia sentencia : this.sentencias) {
+            assembler += sentencia.generarAssembler();
+        }
+        assembler += "JMP INST_IF_END" + this.ifElseQ + "\n"
+                + "INST_IF_ELSE" + this.ifElseQ + ":\n";
+        for (NodoSentencia sentenciaElse : this.sentenciasElse) {
+            assembler += sentenciaElse.generarAssembler();
+        }
+        assembler += "INST_IF_END" + this.ifElseQ + ":\n";
+        
+        return assembler;
     }
 }

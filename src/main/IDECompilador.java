@@ -224,7 +224,7 @@ public class IDECompilador extends JFrame {
 				if (fr == null) {
 					JOptionPane.showMessageDialog(null,"No hay archivo cargado");
 				}else {
-					//saveFile(txaArchivo,false);
+					saveFile(txaArchivo,false);
 					Lexico lexer = new Lexico(fr);
 					parser sintactico = new parser(lexer);
 					try {
@@ -262,7 +262,7 @@ public class IDECompilador extends JFrame {
 		gbc_lblResutadosDelAnlisis.gridy = 8;
 		contentPane.add(lblResutadosDelAnlisis, gbc_lblResutadosDelAnlisis);
 		
-		// Tabla de símblos
+		// Tabla de símbolos
 		
 		JButton btnTable = new JButton("Ver tabla de simbolos");
 		btnTable.addActionListener(new ActionListener() {

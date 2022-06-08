@@ -34,6 +34,28 @@ public class NodoAvg extends NodoExpresion {
         resultado.append(nodoDivisor.graficar(idNodoDivision));
         return resultado.toString();
     }
+
+	@Override
+    public String generarAssembler() {
+
+        super.data.append(this.getId()).append(" dd, ?\n");
+        
+        String assembler = "MOV " + this.getId() + ", 0";
+        
+        for (NodoExpresion expresion : this.lista) {
+            assembler += expresion.generarAssembler();
+            assembler += "FLD " + expresion.getId() + "\n"
+            		+ "FLD " + this.getId() + "\n"
+            		+ "FADD" + "\n"
+            		+ "FSTP " + this.getId() + "\n";
+        }
+
+        assembler += "FLD " + this.getId() + "\n"
+        		+ "FLD " + lista.size() + "\n"
+				+ "FDIV" + "\n"
+        		+ "FSTP " + this.getId() + "\n";
+        return assembler;
+    }
 }
 
 
