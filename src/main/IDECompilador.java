@@ -267,7 +267,7 @@ public class IDECompilador extends JFrame {
 		JButton btnTable = new JButton("Ver tabla de simbolos");
 		btnTable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new SymbolTable();
+				new TablaSimbolos();
 			}
 		});
 		GridBagConstraints gbc_btnTable = new GridBagConstraints();

@@ -28,6 +28,11 @@ public class Main {
 
 			String cmd = "dot -Tpng arbol.dot -o arbol.png";
 			Runtime.getRuntime().exec(cmd);
+			
+			String assembler = programa.generarAssembler();
+			FileWriter fileWriter = new FileWriter("final.asm");
+			fileWriter.write(assembler);
+			fileWriter.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			System.out.println("No hay un archivo para analizar");

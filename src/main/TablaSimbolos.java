@@ -17,7 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class SymbolTable {
+public class TablaSimbolos {
 	// frame
 	JFrame f;
 	// Table
@@ -27,7 +27,7 @@ public class SymbolTable {
 	private String[][] data = null;
 	
 	// Constructor
-	public SymbolTable() {
+	public TablaSimbolos() {
 		// Frame initialization
 		f = new JFrame();
 
