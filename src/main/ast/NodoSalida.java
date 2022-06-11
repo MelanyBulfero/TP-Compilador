@@ -17,8 +17,7 @@ public class NodoSalida extends NodoSentencia {
 
     @Override
     public String generarAssembler() {
-        String variable = "_" + this.cs.getValor().replace("\"", "").replace(".", "punto").replace(" ", "")
-                .replace("<","@menor").replace(">","@mayor");
+        String variable = "_" + this.cs.getValor().replace("\"", "").replace(" ", "").replace("<","@menor").replace(">","@mayor").replace(".", "@punto");
         String assembler = "displayString " + variable + "\n"
                 + "newLine 1 \n" ;
         return assembler;
