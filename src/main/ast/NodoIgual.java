@@ -1,5 +1,7 @@
 package main.ast;
 
+import main.asm.ConstanteDataASM;
+
 public class NodoIgual extends NodoComparacion {
     private static int count = 0;
     private final int igualQ;
@@ -13,7 +15,7 @@ public class NodoIgual extends NodoComparacion {
     
     @Override
     public String generarAssembler() {
-        super.data.append(this.getId()).append(" dd ?\n");
+    	ConstanteDataASM.data.append(this.getId()).append(" dd ?\n");
         
         String assembler = "";
         if (! izquierda.soyHoja()) {

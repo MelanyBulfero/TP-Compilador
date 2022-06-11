@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import main.asm.CargarTS;
+import main.asm.ConstanteDataASM;
 
 public class NodoPrograma extends Nodo {
     private final List<NodoSentencia> sentencias;
@@ -38,13 +39,15 @@ public class NodoPrograma extends Nodo {
 
     public String generarAssembler() {
         StringBuilder assembler = new StringBuilder();
-        super.data.append("include macros2.asm\n"
+        StringBuilder data = new StringBuilder();
+        ConstanteDataASM.data = data;
+        data.append("include macros2.asm\n"
                 + "include number.asm\n"
                 + "\n"
                 + ".MODEL  SMALL\n"
                 + ".386\n"
                 + ".STACK 200h\n");
-        super.data.append(".DATA\n\n");
+        data.append(".DATA\n\n");
         CargarTS tablaSimbolos = new CargarTS("ts.txt");
         try {
             String tabla = tablaSimbolos.generarASM();
@@ -52,7 +55,6 @@ public class NodoPrograma extends Nodo {
         } catch (IOException e) {
             System.out.println("No generó las variables");
         }
-        String data = super.data.toString();
         assembler.append("\n"
                 + ".CODE\n"
                 + "\n"
@@ -69,7 +71,8 @@ public class NodoPrograma extends Nodo {
                 + "   int 21h ; AH=4C00h sale del programa\n" //Quizás hay que quitarlo
                 + "END ; final del archivo.\n");
         this.data.append(assembler);
-        return this.data.toString();
+        ConstanteDataASM.data.append(this.data);
+        return ConstanteDataASM.data.toString();
     }
 }
 

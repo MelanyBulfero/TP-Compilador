@@ -1,5 +1,7 @@
 package main.ast;
 
+import main.asm.ConstanteDataASM;
+
 public class NodoAnd extends NodoCondicion {
     private static int count = 0;
     private final int andQ;
@@ -26,7 +28,7 @@ public class NodoAnd extends NodoCondicion {
 
     @Override
     public String generarAssembler() {
-        super.data.append(this.getId()).append(" dd ?\n");
+        ConstanteDataASM.data.append(this.getId()).append(" dd ?\n");
         
         String assembler = "";
         if (!this.izquierda.soyHoja()) {

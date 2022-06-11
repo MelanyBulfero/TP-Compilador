@@ -9,6 +9,7 @@ DECLARE
 [suma, contador, d1, d2] := [FLOAT, INT, FLOAT, FLOAT]
 [actual, contar, palabra] := [FLOAT, FLOAT, STRING]
 [var] := [INT]
+[var1, a, b, c, d, e, a1] := [INT, INT, INT, INT, INT, INT, INT]
 ENDDECLARE
 
 BEGIN.PROGRAM
@@ -35,11 +36,20 @@ Else{
 	palabra := "es mayor"
 }
 
+var1 := 6
+
 d1 := AVG ([12 , 5 , var1])
+
+a := 1
+b := 2
+c := 3
+d := 4
+e := 5
 
 
 d1 := AVG ([2 , a+b , c*(d+e) , 48])
 
+a1 := 6
 
 d2 := 3.14 + AVG([a1*45+6,56,1.22])
 

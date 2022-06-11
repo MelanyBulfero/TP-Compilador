@@ -1,5 +1,7 @@
 package main.ast;
 
+import main.asm.ConstanteDataASM;
+
 public class NodoMultiplicacion extends NodoExpresionBinaria {
     private static int count = 0;
     private final int mulQ;
@@ -13,7 +15,7 @@ public class NodoMultiplicacion extends NodoExpresionBinaria {
 
     public String generarAssembler() {
 
-        super.data.append(this.getId()).append(" dd, ?\n");
+    	ConstanteDataASM.data.append(this.getId()).append(" dd, ?\n");
 
         String assembler = "";
         if (!izquierda.soyHoja()) {

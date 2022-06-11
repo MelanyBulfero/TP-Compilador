@@ -1,5 +1,7 @@
 package main.ast;
 
+import main.asm.ConstanteDataASM;
+
 public class NodoMayor extends NodoComparacion {
     private static int count;
     private int mayorQ;
@@ -13,7 +15,7 @@ public class NodoMayor extends NodoComparacion {
 
     @Override
     public String generarAssembler() {
-        super.data.append(this.getId()).append(" dd ?\n");
+    	ConstanteDataASM.data.append(this.getId()).append(" dd ?\n");
 
         String assembler = "";
         if (! izquierda.soyHoja()) {

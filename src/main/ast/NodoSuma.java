@@ -1,5 +1,7 @@
 package main.ast;
 
+import main.asm.ConstanteDataASM;
+
 public class NodoSuma extends NodoExpresionBinaria {
     private static int count = 0;
     private final int sumaQ;
@@ -14,7 +16,7 @@ public class NodoSuma extends NodoExpresionBinaria {
 	@Override
     public String generarAssembler() {
 
-        super.data.append(this.getId()).append(" dd, ?\n");
+		ConstanteDataASM.data.append(this.getId()).append(" dd, ?\n");
 
         String assembler = "";
         if (!izquierda.soyHoja()) {
