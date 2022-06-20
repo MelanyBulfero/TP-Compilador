@@ -279,7 +279,7 @@ public class IDECompilador extends JFrame {
 		
 		// AST
 		
-		JButton btnTree = new JButton("Generar AST");
+		JButton btnTree = new JButton("Generar AST y ASM");
 		btnTree.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (fr == null) {
@@ -294,7 +294,11 @@ public class IDECompilador extends JFrame {
 						PrintWriter pw = new PrintWriter(treeFile);
 						pw.println(programa.graficar());
 						treeFile.close();
-						
+						String assembler = programa.generarAssembler();
+						FileWriter fileWriter = new FileWriter("final.asm");
+						fileWriter.write(assembler);
+						fileWriter.close();
+						resultadoAnalisis.setText(assembler);
 					} catch (IOException e1) {
 						JOptionPane.showMessageDialog(null,"Error");
 					} catch (Exception e2) {
@@ -309,7 +313,6 @@ public class IDECompilador extends JFrame {
 					String cmd = "dot -Tpng arbol.dot -o arbol.png";
 					try {
 						Runtime.getRuntime().exec(cmd);
-						resultadoAnalisis.setText("AST generado");
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
