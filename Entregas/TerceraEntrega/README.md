@@ -8,4 +8,4 @@
 
 - El código ASM se encuentra en el archivo final.asm y además se muestra por interfaz de usuario en la caja de texto "Resultado del análisis", como puede verse en la siguiente imágen
 
-![asm on result screen](asm-window.png)
+![asm on result screen](asm-onscreen.png)
