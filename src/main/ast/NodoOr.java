@@ -39,13 +39,15 @@ public class NodoOr extends NodoCondicion {
         	assembler += this.derecha.generarAssembler();
         }
         
-        assembler += "MOV EAX, " + this.izquierda.getId()  + "\n"
-        		+ "MOV EBX, 1\n"
+        assembler += "MOV EAX, 1\n"
+        		+ "MOV EBX, " + this.izquierda.getId()  + "\n"
                 + "CMP EAX, EBX\n"
+                + "CMP " + this.izquierda.getId() + ", 1\n"
                 + "JE INST_OR_TRUE" + this.orQ + "\n"
-                + "MOV EAX, " + this.derecha.getId()  + "\n"
-                + "MOV EBX, 1\n"
+                + "MOV EAX, 1\n"
+                + "MOV EBX, " + this.derecha.getId()  + "\n"
                 + "CMP EAX, EBX\n"
+                + "CMP " + this.derecha.getId() + ", 1\n"
                 + "JE INST_OR_TRUE" + this.orQ + "\n"
                 + "MOV " + this.getId() + ", 0\n"
                 + "JMP INST_OR_END" + this.orQ + "\n"

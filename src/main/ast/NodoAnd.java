@@ -38,13 +38,15 @@ public class NodoAnd extends NodoCondicion {
         	assembler += this.derecha.generarAssembler();
         }
 
-        assembler += "MOV EAX, " + this.izquierda.getId() + "\n"
-        		+ "MOV EBX, 1\n"
+        assembler += "MOV EAX, 1\n"
+        		+ "MOV EBX, " + this.izquierda.getId() + "\n"
                 + "CMP EAX, EBX\n"
+                + "CMP " + this.izquierda.getId() + ", 1\n"
                 + "JNE INST_AND_FALSE" + this.andQ + "\n"
-                + "MOV EAX, " + this.derecha.getId() + "\n"
-                + "MOV EBX, 1\n"
+                + "MOV EAX, 1\n"
+                + "MOV EBX, " + this.derecha.getId() + "\n"
                 + "CMP EAX, EBX\n"
+                + "CMP " + this.derecha.getId() + ", 1\n"
                 + "JNE INST_AND_FALSE" + this.andQ + "\n"
                 + "MOV " + this.getId() + ", 1\n"
                 + "JMP INST_AND_END" + this.andQ + "\n"

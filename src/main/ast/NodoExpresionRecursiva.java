@@ -1,5 +1,6 @@
 package main.ast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NodoExpresionRecursiva extends NodoExpresion {
@@ -17,8 +18,11 @@ public class NodoExpresionRecursiva extends NodoExpresion {
         final String miId = this.getIdNodo();
         if (lista.size() >= 1) {
             NodoExpresion expresionhijo = lista.get(lista.size()-1);
-            lista.remove(lista.size()-1);
-            Nodo nodoRecursivo = new NodoExpresionRecursiva(lista, "+", expresionhijo);
+    		int listSize = lista.size();
+    		List<NodoExpresion> listaAux = new ArrayList<NodoExpresion>();
+            NodoExpresion expresion = lista.get(listSize-1);
+    		listaAux = lista.subList(0, listSize-1);
+            Nodo nodoRecursivo = new NodoExpresionRecursiva(listaAux, "+", expresionhijo);
             return super.graficar(idPadre) +
             		nodoRecursivo.graficar(miId) +
             		expresion.graficar(miId);

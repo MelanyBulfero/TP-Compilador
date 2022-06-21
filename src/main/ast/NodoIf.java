@@ -38,9 +38,10 @@ public class NodoIf extends NodoIfGenerico {
     @Override
     public String generarAssembler() {
     	String assembler = this.condicion.generarAssembler()
-                + "MOV EAX, " + this.condicion.getId()  + "\n"
-                + "MOV EBX, 1\n"
+                + "MOV EAX, 1\n"
+                + "MOV EBX, " + this.condicion.getId()  + "\n"
                 + "CMP EAX, EBX \n"
+                + "CMP " + this.condicion.getId() + ", 1\n"
                 + "JNE INST_IF" + this.ifQ + "\n";
         for (NodoSentencia sentencia : this.sentencias) {
             assembler += sentencia.generarAssembler();

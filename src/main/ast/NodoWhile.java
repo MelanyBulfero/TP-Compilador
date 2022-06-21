@@ -42,9 +42,10 @@ public class NodoWhile extends NodoSentencia {
     public String generarAssembler() {
     	String assembler = "INST_WHILE_BEGIN" + this.whileQ + ":\n"
                 + this.condicion.generarAssembler()
-                + "MOV EAX, " + this.condicion.getId() + "\n"
-                + "MOV EBX, 1\n"
+                + "MOV EAX, 1\n"
+                + "MOV EBX, " + this.condicion.getId() + "\n"
                 + "CMP EAX, EBX \n"
+                + "CMP " + this.condicion.getId() + ", 1\n"
                 + "JNE INST_WHILE_END" + this.whileQ + "\n";
         for (NodoSentencia sentencia : cuerpo) {
             assembler += sentencia.generarAssembler();

@@ -25,8 +25,8 @@ public class NodoIgual extends NodoComparacion {
         	assembler += derecha.generarAssembler();
         }
         
-        assembler += "MOV EAX, " + izquierda.getId()  + "\n"
-        		+ "MOV EBX, " + derecha.getId()  + "\n"
+        assembler += "MOV EAX, " + derecha.getId()  + "\n"
+        		+ "MOV EBX, " + izquierda.getId()  + "\n"
                 + "CMP EAX, EBX\n"
         		+ "JE EQ_TRUE" + this.igualQ + "\n"
         		+ "MOV " + this.getId() + ", 0\n"

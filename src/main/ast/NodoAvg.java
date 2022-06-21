@@ -49,7 +49,7 @@ public class NodoAvg extends NodoExpresion {
         String assembler = "MOV " + this.getId() + ", 0\n";
 
         for (NodoExpresion expresion : this.lista) {
-        	
+
             if (!expresion.soyHoja()) {
             	assembler += expresion.generarAssembler();
             }
