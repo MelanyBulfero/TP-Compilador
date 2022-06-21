@@ -45,7 +45,7 @@ public class CargarTS {
                                 value = " dd " + value;
                                 break;
                             case "Real":
-                                value = " dd " + value.replace(".", ",");
+                                value = " dd " + value.replace(",", ".");
                                 break;
                             default:
                                 value=" dd ?";
