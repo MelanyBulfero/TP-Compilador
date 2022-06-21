@@ -28,7 +28,7 @@ public class NodoSuma extends NodoExpresionBinaria {
 
         assembler += "FLD " + izquierda.getId() + "\n"
         		+ "FLD " + derecha.getId() + "\n"
-        		+ "FADD" + "\n"
+        		+ "FADD\n"
         		+ "FSTP " + this.getId() + "\n";
         return assembler;
     }

@@ -27,7 +27,7 @@ public class NodoMultiplicacion extends NodoExpresionBinaria {
 
         assembler += "FLD " + izquierda.getId() + "\n"
         		+ "FLD " + derecha.getId() + "\n"
-        		+ "FMUL "+ "\n"
+        		+ "FMUL\n"
         		+ "FSTP " + this.getId() + "\n";
         return assembler;
     }

@@ -28,7 +28,7 @@ public class NodoDivision extends NodoExpresionBinaria {
 
         assembler += "FLD " + izquierda.getId() + "\n"
         		+ "FLD " + derecha.getId() + "\n"
-				+ "FDIV" + "\n"
+				+ "FDIV\n"
         		+ "FSTP " + this.getId() + "\n";
         return assembler;
     }
